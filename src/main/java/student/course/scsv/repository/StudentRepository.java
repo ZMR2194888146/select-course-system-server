@@ -8,4 +8,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Student findStudentById(Long id);
     //通过学生判断学号是否存在
     boolean existsStudentById(Long id);
+
 }

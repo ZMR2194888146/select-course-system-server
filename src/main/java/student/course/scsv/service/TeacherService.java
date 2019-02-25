@@ -13,10 +13,6 @@ public class TeacherService {
     @Autowired
     private TeacherRepository teacherRepository;
 
-    public void saveTeacher(Teacher teacher){
-        teacherRepository.save(teacher);
-    }
-
     public boolean existTeacher(Long id){
         return teacherRepository.existsTeacherById(id);
     }
@@ -27,5 +23,19 @@ public class TeacherService {
             return FormatString.userInfoToJson("200", "query successful",JSON.toJSONString(t));
         }
         return FormatString.userInfoToJson("200", "query failed", null);
+    }
+
+    public void saveTeacher(Teacher teacher){
+        teacherRepository.save(teacher);
+    }
+
+    public String updatePassword(Long id, String password) {
+        if (existTeacher(id)){
+            Teacher t = teacherRepository.findTeacherById(id);
+            t.setPassword(password);
+            teacherRepository.save(t);
+            return FormatString.infoToJson("200","update successful", null);
+        }
+        return FormatString.infoToJson("200","update failed", null);
     }
 }

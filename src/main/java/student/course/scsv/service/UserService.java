@@ -20,6 +20,15 @@ public class UserService {
         }
     }
 
+
+    public String updatePassword(Long id, String password, String usertype) {
+        if ("student".equals(usertype)){
+            return studentService.updatePassword(id, password);
+        }else {
+            return teacherService.updatePassword(id, password);
+        }
+    }
+
     private String getTeacherInfo(Long id){
         return teacherService.getTeacherInfo(id);
     }
