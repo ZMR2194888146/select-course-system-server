@@ -1,6 +1,7 @@
 package student.course.scsv.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import student.course.scsv.entity.Student;
@@ -13,6 +14,9 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private MenuService menuService;
+
     public boolean existStudent(Long id){
         return studentRepository.existsStudentById(id);
     }
@@ -22,7 +26,15 @@ public class StudentService {
             Student s = studentRepository.findStudentById(id);
             return FormatString.userInfoToJson("200", "query successful", JSON.toJSONString(s));
         }
-        return FormatString.userInfoToJson("200", "query failed", null);
+        return FormatString.userInfoToJson("200", "query failed", (String) null);
+    }
+
+    /**
+     * 获取所有的学生列表，以JSON格式返回
+     * @return JSONObject
+     */
+    public JSONObject getAllStudent(){
+        return JSONObject.parseObject(JSON.toJSONString(studentRepository.findAll()));
     }
 
     public String updatePassword(Long id, String password){
@@ -30,12 +42,13 @@ public class StudentService {
             Student s = studentRepository.findStudentById(id);
             s.setPassword(password);
             studentRepository.save(s);
-            return FormatString.infoToJson("200","update successful", null);
+            return FormatString.infoToJson("200","update successful", "");
         }
-        return FormatString.infoToJson("200","update failed", null);
+        return FormatString.infoToJson("200","update failed", "");
     }
 
     public void saveStudent(Student student){
         studentRepository.save(student);
     }
+
 }

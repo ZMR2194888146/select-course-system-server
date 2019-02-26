@@ -1,7 +1,9 @@
 package student.course.scsv.service;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import student.course.scsv.util.FormatString;
 
 @Service
 public class UserService {
@@ -20,6 +22,15 @@ public class UserService {
         }
     }
 
+    /**
+     * 获取所有的用户信息
+     */
+    public String getAllUser(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("teacher", teacherService.getAllTeacher());
+        jsonObject.put("student", studentService.getAllStudent());
+        return FormatString.infoToJson("200", "query success", jsonObject);
+    }
 
     public String updatePassword(Long id, String password, String usertype) {
         if ("student".equals(usertype)){
