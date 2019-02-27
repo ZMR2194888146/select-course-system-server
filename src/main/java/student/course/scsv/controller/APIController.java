@@ -20,6 +20,12 @@ public class APIController {
     private UserService userService;
 
     @Autowired
+    private TeacherService teacherService;
+
+    @Autowired
+    private StudentService studentService;
+
+    @Autowired
     private MenuService menuService;
 
     @Autowired
@@ -51,25 +57,45 @@ public class APIController {
     }
 
     /**
-     * 通过用户id获取用户信息
-     * @param id 用户id
-     * @return JSON
+     * 根据教师id获取教师的信息
+     * @param id    教师信息
+     * @return  JSON
      */
-    @GetMapping( value = "/user/{id}")
-    public String getInfo(@PathVariable("id") Long id){
-        return userService.getUserInfo(id);
+    @GetMapping(path = "/teacher/{id}")
+    public String getTeacherInfo(@PathVariable("id")  Long id){
+        return teacherService.getTeacherInfo(id);
     }
 
     /**
-     * 更新用户密码
+     * 通过学生id获取用户信息
+     * @param id 用户id
+     * @return JSON
+     */
+    @GetMapping( value = "/student/{id}")
+    public String getInfo(@PathVariable("id") Long id){
+        return studentService.getStudentInfo(id);
+    }
+
+    /**
+     * 更学生用户密码
      * @param id        用户id
      * @param password  用户的新密码，密码的核对在客户端完成
-     * @param usertype  用户类型
-     * @return  JSON
+     *  @return  JSON
      */
-    @PutMapping( value = "/user/{id}")
-    public String updateUserPassword(@PathVariable("id") Long id, String password,String usertype){
-        return userService.updatePassword(id, password, usertype);
+    @PutMapping( value = "/student/{id}")
+    public String updateStudentPassword(@PathVariable("id") Long id, String password){
+        return studentService.updatePassword(id, password);
+    }
+
+    /**
+     * 更新教师用户密码
+     * @param id        用户id
+     * @param password  用户的新密码，密码的核对在客户端完成
+     *  @return  JSON
+     */
+    @PutMapping( value = "/teacher/{id}")
+    public String updateTeacherPassword(@PathVariable("id") Long id, String password){
+        return teacherService.updatePassword(id, password);
     }
 
     /**
@@ -93,6 +119,16 @@ public class APIController {
     }
 
     /**
+     * 通过教师id查询该教师创建的课表
+     * @param id 教师id
+     * @return JSON
+     */
+    @GetMapping(path = "/course/{id}")
+    public String getCourseByTid(@PathVariable("id") Long id){
+        return courseService.getCourseById(id);
+    }
+
+    /**
      * 添加一门课程
      * @param name      课程名称
      * @param tid       教师编号
@@ -105,10 +141,10 @@ public class APIController {
      * @return JSON
      */
     @PostMapping( path = "/course")
-    public String addCourse(String name, String tid, String capacity,
+    public String addCourse(String name, Long tid, Integer capacity,
                             String time, String data, String space, String duce,
-                            String score){
-        return courseService.saveCourse(new Course( name,  Integer.parseInt(capacity),  time,  data,  space,  Long.parseLong(tid),  duce, Double.parseDouble(score)));
+                            Double score){
+        return courseService.saveCourse(new Course(tid, name, capacity, time, data, space, duce, score));
     }
 
     /**
@@ -117,15 +153,30 @@ public class APIController {
      * @return  JSON
      */
     @DeleteMapping( path = "/course")
-    public String delCourse(String cid){
-        return courseService.delCourse(Long.parseLong(cid));
+    public String delCourse(Long cid){
+        return courseService.delCourse(cid);
     }
 
     /**********************  选课相关接口  ***********************/
+    /**
+     * 添加一个学生选的一门课
+     * @param sid   学生学号
+     * @param cid   学生选的课程号
+     * @return  JSON
+     */
     @PostMapping(path = "/sc")
     public String addSelectCourse(String sid, String cid){
-        System.out.println(sid + "," + cid);
         return selectCourseService.saveSelectCourse(new SelectedCourse(Long.parseLong(sid), Long.parseLong(cid)));
+    }
+
+    /**
+     * 查询一个学生所选的所有课程
+     * @param id    学生学号
+     * @return  JSON
+     */
+    @GetMapping(path = "/sc/{id}")
+    public String showSelectedCourse(@PathVariable("id") Long id){
+        return selectCourseService.queryStudentSelected(id);
     }
 
 }

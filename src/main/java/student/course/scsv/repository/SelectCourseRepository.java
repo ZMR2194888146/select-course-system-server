@@ -4,7 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import student.course.scsv.entity.SelectCourseKey;
 import student.course.scsv.entity.SelectedCourse;
 
+import java.util.List;
+
 public interface SelectCourseRepository extends JpaRepository<SelectedCourse, SelectCourseKey> {
-    @Override
-    <S extends SelectedCourse> S save(S entity);
+    List<SelectedCourse> findBySid(Long sid);
 }

@@ -4,5 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import student.course.scsv.entity.Course;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
-    void removeCourseById(Long Id);
+    void removeCourseById(Long id);
+    Course findCourseById(Long id);
 }

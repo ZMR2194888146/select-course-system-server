@@ -46,7 +46,7 @@ public class TeacherService {
      * @param password  新的密码
      * @return JSON
      */
-     String updatePassword(Long id, String password) {
+     public String updatePassword(Long id, String password) {
         if (existTeacher(id)){
             Teacher t = teacherRepository.findTeacherById(id);
             t.setPassword(password);
@@ -61,10 +61,10 @@ public class TeacherService {
      * @param id    需要获取信息的教师的id
      * @return  JSON
      */
-     String getTeacherInfo(Long id){
+     public String getTeacherInfo(Long id){
         if (existTeacher(id)){
             Teacher t = teacherRepository.findTeacherById(id);
-            return FormatString.userInfoToJson("200","query successful", JSON.toJSONString(t));
+            return FormatString.infoToJson("200","query successful", t);
         }
         return FormatString.infoToJson("200","query failed");
     }

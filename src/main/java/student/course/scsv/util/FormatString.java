@@ -2,6 +2,8 @@ package student.course.scsv.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import student.course.scsv.entity.Course;
+import student.course.scsv.entity.User;
 
 import java.util.Map;
 import java.util.Set;
@@ -11,19 +13,34 @@ import java.util.Set;
  */
 public class FormatString {
 
-    public static String infoToJson(String code, String message, String data){
+    private static JSONObject getJSONObject(String code, String message){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", code);
-        jsonObject.put("messsage", message);
+        jsonObject.put("message", message);
+        return jsonObject;
+    }
+
+    public static String infoToJson(String code, String message, String data){
+        JSONObject jsonObject = getJSONObject(code, message);
         jsonObject.put("data", data);
         return jsonObject.toJSONString();
     }
 
-    public static String infoToJson(String code, String message, JSONArray ja){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", code);
-        jsonObject.put("message", message);
-        jsonObject.put("data", ja);
+    public static String infoToJson(String code, String message, User user){
+        JSONObject jsonObject = getJSONObject(code, message);
+        jsonObject.put("data", user);
+        return jsonObject.toJSONString();
+    }
+
+    public static String infoToJson(String code, String message, Course course){
+        JSONObject jsonObject = getJSONObject(code, message);
+        jsonObject.put("data", course);
+        return jsonObject.toJSONString();
+    }
+
+    public static String infoToJson(String code, String message, JSONArray jsonArray){
+        JSONObject jsonObject = getJSONObject(code, message);
+        jsonObject.put("data", jsonArray);
         return jsonObject.toJSONString();
     }
 
@@ -39,11 +56,6 @@ public class FormatString {
         return infoToJson(code, message, "");
     }
 
-
-
-    public static String userInfoToJson(String code, String message, String teacherInfo) {
-        return infoToJson(code,message, teacherInfo);
-    }
 
     private static JSONObject mapToJSONObject(Map map){
         JSONObject jsonObject = new JSONObject();

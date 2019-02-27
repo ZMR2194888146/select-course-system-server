@@ -14,8 +14,8 @@ public class UserService {
     @Autowired
     private StudentService studentService;
 
-    public String getUserInfo(Long id){
-        if (teacherService.existTeacher(id)){
+    public String getUserInfo(Long id, String userType){
+        if ("teacher".equals(userType)){
             return getTeacherInfo(id);
         }else {
             return getStudentInfo(id);

@@ -24,9 +24,9 @@ public class StudentService {
     public String getStudentInfo(Long id){
         if (existStudent(id)){
             Student s = studentRepository.findStudentById(id);
-            return FormatString.userInfoToJson("200", "query successful", JSON.toJSONString(s));
+            return FormatString.infoToJson("200", "query successful", s);
         }
-        return FormatString.userInfoToJson("200", "query failed", (String) null);
+        return FormatString.infoToJson("200", "query failed");
     }
 
     /**
@@ -42,9 +42,9 @@ public class StudentService {
             Student s = studentRepository.findStudentById(id);
             s.setPassword(password);
             studentRepository.save(s);
-            return FormatString.infoToJson("200","update successful", "");
+            return FormatString.infoToJson("200","update successful");
         }
-        return FormatString.infoToJson("200","update failed", "");
+        return FormatString.infoToJson("200","update failed");
     }
 
     public void saveStudent(Student student){

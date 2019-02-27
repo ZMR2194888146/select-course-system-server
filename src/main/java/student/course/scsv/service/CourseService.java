@@ -24,9 +24,9 @@ public class CourseService {
      */
     public String saveCourse(Course course){
         if (courseRepository.save(course) != null){
-            return FormatString.infoToJson("200", "update success", "");
+            return FormatString.infoToJson("200", "update success");
         }
-        return FormatString.infoToJson("200", "update failed", "");
+        return FormatString.infoToJson("200", "update failed");
     }
 
     /**
@@ -50,6 +50,16 @@ public class CourseService {
             ja.add(JSONObject.parseObject(JSON.toJSONString(course)));
         }
         return FormatString.infoToJson("200", "query success", ja);
-//        return ja.toJSONString();
+    }
+
+    /**
+     * 通过课程id查询该课程的信息
+     * @param id    要查询课程的id
+     * @return  JSON
+     */
+    public String getCourseById(Long id){
+        Course course = courseRepository.findCourseById(id);
+        if (course != null) return FormatString.infoToJson("200", "query success", course);
+        return FormatString.infoToJson("200", "query failed");
     }
 }

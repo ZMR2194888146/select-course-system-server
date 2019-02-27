@@ -1,10 +1,19 @@
 package student.course.scsv.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import student.course.scsv.entity.Course;
 import student.course.scsv.entity.SelectedCourse;
+import student.course.scsv.entity.Teacher;
+import student.course.scsv.repository.CourseRepository;
 import student.course.scsv.repository.SelectCourseRepository;
+import student.course.scsv.repository.TeacherRepository;
 import student.course.scsv.util.FormatString;
+
+import java.util.List;
 
 @Service
 public class SelectCourseService {
@@ -12,10 +21,31 @@ public class SelectCourseService {
     @Autowired
     private SelectCourseRepository selectCourseRepository;
 
+    @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
+    private TeacherRepository teacherRepository;
+
     public String saveSelectCourse(SelectedCourse selectedCourse){
         if (selectCourseRepository.save(selectedCourse) != null){
             return FormatString.infoToJson("200", "update success");
         }
         return FormatString.infoToJson("200", "update failed");
+    }
+
+    public String queryStudentSelected(Long id) {
+        List<SelectedCourse> list = selectCourseRepository.findBySid(id);
+        JSONArray jsonArray = new JSONArray();
+        for (SelectedCourse sc: list) {
+            Course course = courseRepository.findCourseById(sc.getCid());
+            Teacher teacher = teacherRepository.findTeacherById(course.getTid());
+            JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(course));
+            System.out.println(jsonObject.toJSONString());
+            jsonObject.remove("tid");
+            jsonObject.put("teacher", teacher.getUserName());
+            jsonArray.add(JSONObject.parseObject(JSON.toJSONString(course)));
+        }
+        return FormatString.infoToJson("200", "query success", jsonArray);
     }
 }

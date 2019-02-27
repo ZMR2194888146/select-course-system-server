@@ -17,7 +17,7 @@ public class Course {
     private Long id;
 
     @JSONField(name = "tid")
-    private Long teacherID;
+    private Long tid;
 
     //课程名称
     @JSONField(name = "cname")
@@ -50,7 +50,8 @@ public class Course {
     public Course() {
     }
 
-    public Course(String name, Integer capacity, String time, String date, String space, Long teacher, String duce, Double score) {
+    public Course(Long teacherID, String name, Integer capacity, String time, String date, String space, String duce, Double score) {
+        this.tid = teacherID;
         this.name = name;
         this.capacity = capacity;
         this.time = time;
@@ -58,7 +59,14 @@ public class Course {
         this.space = space;
         this.duce = duce;
         this.score = score;
-        this.teacherID = teacher;
+    }
+
+    public Long getTid() {
+        return tid;
+    }
+
+    public void setTid(Long tid) {
+        this.tid = tid;
     }
 
     public Long getId() {
@@ -129,7 +137,7 @@ public class Course {
     public String toString() {
         return "Course{" +
                 "id=" + id +
-                ", teacherID=" + teacherID +
+                ", tid=" + tid +
                 ", name='" + name + '\'' +
                 ", capacity=" + capacity +
                 ", time='" + time + '\'' +
