@@ -11,6 +11,14 @@ public class SelectCourseKey implements Serializable {
 
     private Long cid;
 
+    public SelectCourseKey() {
+    }
+
+    public SelectCourseKey(Long sid, Long cid) {
+        this.sid = sid;
+        this.cid = cid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

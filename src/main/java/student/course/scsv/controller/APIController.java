@@ -3,10 +3,8 @@ package student.course.scsv.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import student.course.scsv.entity.Course;
-import student.course.scsv.service.CourseService;
-import student.course.scsv.service.LoginService;
-import student.course.scsv.service.MenuService;
-import student.course.scsv.service.UserService;
+import student.course.scsv.entity.SelectedCourse;
+import student.course.scsv.service.*;
 
 /**
  * 系统向客户端提供的唯一的数据交互通道
@@ -26,6 +24,9 @@ public class APIController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private SelectCourseService selectCourseService;
 
     /**********************  用户相关接口  ***********************/
     /**
@@ -88,7 +89,7 @@ public class APIController {
      */
     @GetMapping( path = "/course")
     public String getCourses(){
-        return "";
+        return courseService.getAllCourse();
     }
 
     /**
@@ -118,6 +119,13 @@ public class APIController {
     @DeleteMapping( path = "/course")
     public String delCourse(String cid){
         return courseService.delCourse(Long.parseLong(cid));
+    }
+
+    /**********************  选课相关接口  ***********************/
+    @PostMapping(path = "/sc")
+    public String addSelectCourse(String sid, String cid){
+        System.out.println(sid + "," + cid);
+        return selectCourseService.saveSelectCourse(new SelectedCourse(Long.parseLong(sid), Long.parseLong(cid)));
     }
 
 }

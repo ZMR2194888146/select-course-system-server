@@ -1,46 +1,60 @@
 package student.course.scsv.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import javax.persistence.*;
 
+/**
+ * 配置上JSON域，方便将实例转成JSON对象
+ */
 @Entity
 public class Course {
 
     @Id
     @Column(length = 10 )
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JSONField(name = "id")
     private Long id;
 
+    @JSONField(name = "tid")
     private Long teacherID;
 
     //课程名称
+    @JSONField(name = "cname")
     private String name;
 
     //课程容量
+    @JSONField(name = "capacity")
     private Integer capacity;
 
     //上课时间
+    @JSONField(name = "time")
     private String time;
 
     //周几上课
-    private String data;
+    @JSONField(name = "date")
+    private String date;
 
     //上课地点
+    @JSONField(name = "space")
     private String space;
 
     //周学时
+    @JSONField(name = "duce")
     private String duce;
 
     //课程学分
+    @JSONField(name = "score")
     private Double score;
 
     public Course() {
     }
 
-    public Course(String name, Integer capacity, String time, String data, String space, Long teacher, String duce, Double score) {
+    public Course(String name, Integer capacity, String time, String date, String space, Long teacher, String duce, Double score) {
         this.name = name;
         this.capacity = capacity;
         this.time = time;
-        this.data = data;
+        this.date = date;
         this.space = space;
         this.duce = duce;
         this.score = score;
@@ -79,12 +93,12 @@ public class Course {
         this.time = time;
     }
 
-    public String getData() {
-        return data;
+    public String getDate() {
+        return date;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getSpace() {
@@ -119,7 +133,7 @@ public class Course {
                 ", name='" + name + '\'' +
                 ", capacity=" + capacity +
                 ", time='" + time + '\'' +
-                ", data='" + data + '\'' +
+                ", date='" + date + '\'' +
                 ", space='" + space + '\'' +
                 ", duce='" + duce + '\'' +
                 ", score=" + score +

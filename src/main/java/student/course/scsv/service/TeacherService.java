@@ -40,23 +40,33 @@ public class TeacherService {
         return JSONObject.parseObject(ja.toJSONString());
     }
 
-    public String updatePassword(Long id, String password) {
+    /**
+     * 更新教师密码
+     * @param id        需要更新密码的教师的id
+     * @param password  新的密码
+     * @return JSON
+     */
+     String updatePassword(Long id, String password) {
         if (existTeacher(id)){
             Teacher t = teacherRepository.findTeacherById(id);
             t.setPassword(password);
             teacherRepository.save(t);
-            return FormatString.infoToJson("200","update successful", "");
+            return FormatString.infoToJson("200","update successful");
         }
-        return FormatString.infoToJson("200","update failed", "");
+        return FormatString.infoToJson("200","update failed");
     }
 
-    //根据id获取教师的身份信息
-    public String getTeacherInfo(Long id){
+    /**
+     * 获取教师信息
+     * @param id    需要获取信息的教师的id
+     * @return  JSON
+     */
+     String getTeacherInfo(Long id){
         if (existTeacher(id)){
             Teacher t = teacherRepository.findTeacherById(id);
             return FormatString.userInfoToJson("200","query successful", JSON.toJSONString(t));
         }
-        return FormatString.userInfoToJson("200","failed successful", "");
+        return FormatString.infoToJson("200","query failed");
     }
 
 

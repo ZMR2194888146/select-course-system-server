@@ -1,5 +1,6 @@
 package student.course.scsv.util;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.Map;
@@ -18,8 +19,12 @@ public class FormatString {
         return jsonObject.toJSONString();
     }
 
-    public static String infoToJson(String code, String message){
-        return infoToJson(code, message, "");
+    public static String infoToJson(String code, String message, JSONArray ja){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        jsonObject.put("message", message);
+        jsonObject.put("data", ja);
+        return jsonObject.toJSONString();
     }
 
     public static String infoToJson(String code, String message, JSONObject data){
@@ -29,6 +34,11 @@ public class FormatString {
     public static String infoToJson(String code, String message, Map data){
         return infoToJson(code, message, mapToJSONObject(data));
     }
+
+    public static String infoToJson(String code, String message){
+        return infoToJson(code, message, "");
+    }
+
 
 
     public static String userInfoToJson(String code, String message, String teacherInfo) {

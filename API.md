@@ -12,7 +12,7 @@
   ```json
    {
    	"code":"200",
-   	"data":[
+   	"date":[
    		{
    		    "succ":"true"
    		}
@@ -40,7 +40,7 @@
   ```json
   {
       "code":"200",
-      "data":{
+      "date":{
           "college":"dxxy",
           "id":20150201007,
           "password":"123456",
