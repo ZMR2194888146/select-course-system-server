@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import student.course.scsv.entity.Course;
 import student.course.scsv.entity.SelectedCourse;
+import student.course.scsv.entity.Student;
+import student.course.scsv.entity.Teacher;
 import student.course.scsv.service.*;
 
 /**
@@ -37,14 +39,14 @@ public class APIController {
     /**********************  用户相关接口  ***********************/
     /**
      * 用户登录接口
-     * @param id        用户id
+     * @param username        用户id
      * @param password  用户密码
      * @param usertype  用户类型
      * @return  JSON
      */
     @PostMapping(path = "/login")
-    public String login(Long id, String password, String usertype){
-       return loginService.checkLogin(id, password,usertype);
+    public String login(String username, String password, String usertype){
+       return loginService.checkLogin(username, password,usertype);
     }
 
     /**
@@ -63,7 +65,7 @@ public class APIController {
      */
     @GetMapping(path = "/teacher/{id}")
     public String getTeacherInfo(@PathVariable("id")  Long id){
-        return teacherService.getTeacherInfo(id);
+        return teacherService.getTeacherInfoById(id);
     }
 
     /**
@@ -125,7 +127,7 @@ public class APIController {
      */
     @GetMapping(path = "/course/{id}")
     public String getCourseByTid(@PathVariable("id") Long id){
-        return courseService.getCourseById(id);
+        return courseService.getCourseByTid(id);
     }
 
     /**
@@ -147,17 +149,14 @@ public class APIController {
         return courseService.saveCourse(new Course(tid, name, capacity, time, data, space, duce, score));
     }
 
-    /**
-     * 删除课程
-     * @param cid 需要删除的课程id
-     * @return  JSON
-     */
     @DeleteMapping( path = "/course")
     public String delCourse(Long cid){
         return courseService.delCourse(cid);
     }
 
-    /**********************  选课相关接口  ***********************/
+    /**************************************************
+     //                      选课相关接口
+     **************************************************/
     /**
      * 添加一个学生选的一门课
      * @param sid   学生学号
@@ -179,4 +178,23 @@ public class APIController {
         return selectCourseService.queryStudentSelected(id);
     }
 
+    /*******************************************************
+     //                   管理员相关接口
+     *******************************************************/
+    /**
+     * 添加一个教师用户，默认密码为8个8
+     * @param name      用户真实姓名
+     * @param college   用户所属学院
+     * @param username  用户登录名
+     * @return  JSON
+     */
+    @PostMapping(path = "/admin/teacher")
+    public String addTeacherUser(String name, String college,String username){
+        return teacherService.addTeacher(new Teacher(name, college, username, "88888888"));
+    }
+
+    @PostMapping(path = "/admin/student")
+    public String addStudentUser(String username, String className, String name, String college, String major){
+        return studentService.saveStudent(new Student(username, "88888888", className, name, college, major));
+    }
 }

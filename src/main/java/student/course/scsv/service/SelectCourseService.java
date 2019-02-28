@@ -41,10 +41,10 @@ public class SelectCourseService {
             Course course = courseRepository.findCourseById(sc.getCid());
             Teacher teacher = teacherRepository.findTeacherById(course.getTid());
             JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(course));
-            System.out.println(jsonObject.toJSONString());
+            System.out.println(jsonObject);
             jsonObject.remove("tid");
-            jsonObject.put("teacher", teacher.getUserName());
-            jsonArray.add(JSONObject.parseObject(JSON.toJSONString(course)));
+            jsonObject.put("teacher", teacher.getName());
+            jsonArray.add(jsonObject);
         }
         return FormatString.infoToJson("200", "query success", jsonArray);
     }

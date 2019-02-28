@@ -20,24 +20,26 @@ public class TeacherService {
     @Autowired
     private MenuService menuService;
 
-    public boolean existTeacher(Long id){
+    private boolean existTeacherById(Long id){
         return teacherRepository.existsTeacherById(id);
     }
 
-
-    public void saveTeacher(Teacher teacher){
-        teacherRepository.save(teacher);
+    private boolean existTeacherByUserName(String userName){
+        return teacherRepository.existsTeacherByUsername(userName);
     }
+
 
     /**
      * 获取所有的教师列表，以JSON格式返回
      * @return JSONObject
      */
-    public JSONObject getAllTeacher(){
-        List<Teacher> t = teacherRepository.findAll();
-        JSONArray ja = new JSONArray();
-        ja.add(JSONObject.parseObject(JSON.toJSONString(t)));
-        return JSONObject.parseObject(ja.toJSONString());
+    public JSONArray getAllTeacher(){
+        List<Teacher> teachers = teacherRepository.findAll();
+        JSONArray array = new JSONArray();
+        for (Teacher teacher:   teachers ) {
+            array.add(JSONObject.parseObject(JSON.toJSONString(teacher)));
+        }
+        return array;
     }
 
     /**
@@ -47,7 +49,7 @@ public class TeacherService {
      * @return JSON
      */
      public String updatePassword(Long id, String password) {
-        if (existTeacher(id)){
+        if (existTeacherById(id)){
             Teacher t = teacherRepository.findTeacherById(id);
             t.setPassword(password);
             teacherRepository.save(t);
@@ -57,18 +59,28 @@ public class TeacherService {
     }
 
     /**
-     * 获取教师信息
+     * 根据获取教师信息
      * @param id    需要获取信息的教师的id
      * @return  JSON
      */
-     public String getTeacherInfo(Long id){
-        if (existTeacher(id)){
+     public String getTeacherInfoById(Long id){
+        if (existTeacherById(id)){
             Teacher t = teacherRepository.findTeacherById(id);
             return FormatString.infoToJson("200","query successful", t);
         }
         return FormatString.infoToJson("200","query failed");
     }
 
-
+    /**
+     * 添加一个教师用户
+     * @param teacher   需要添加的教师实体
+     * @return JSON
+     */
+    public String addTeacher(Teacher teacher){
+         if (teacherRepository.save(teacher) != null){
+             return FormatString.infoToJson("200", "update success");
+         }
+         return FormatString.infoToJson("400", "update failed");
+    }
 
 }

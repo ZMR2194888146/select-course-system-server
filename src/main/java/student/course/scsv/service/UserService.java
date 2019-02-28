@@ -41,7 +41,7 @@ public class UserService {
     }
 
     private String getTeacherInfo(Long id){
-        return teacherService.getTeacherInfo(id);
+        return teacherService.getTeacherInfoById(id);
     }
 
     private String getStudentInfo(Long id){

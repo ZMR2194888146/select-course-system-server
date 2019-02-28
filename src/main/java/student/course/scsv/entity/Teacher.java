@@ -15,21 +15,31 @@ public class Teacher extends User{
     @JSONField(name = "id")
     private Long id;
 
+    @JSONField(name = "name")
+    private String name;
+
     @JSONField(name = "college")
     private String college;
 
     //用户登录名
-    @JSONField(name = "userName")
-    private String userName;
+    @JSONField(name = "username")
+    private String username;
 
     private String password;
 
     public Teacher() {
     }
 
-    public Teacher(String college, String userName, String password) {
+    /**
+     * @param name      教师真实姓名
+     * @param college   教师所属学院
+     * @param userName  教师登录名
+     * @param password  初始密码
+     */
+    public Teacher(String name, String college, String userName, String password) {
+        this.name = name;
         this.college = college;
-        this.userName = userName;
+        this.username = userName;
         this.password = password;
     }
 
@@ -49,12 +59,12 @@ public class Teacher extends User{
         this.college = college;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -63,5 +73,13 @@ public class Teacher extends User{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

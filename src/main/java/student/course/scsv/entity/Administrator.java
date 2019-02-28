@@ -4,22 +4,24 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Adminisitrator {
+public class Administrator {
 
     @Id
     private Long id;
 
+    private String username;
+
     private String password;
 
-    public Adminisitrator() {
+    public Administrator() {
     }
 
-    public Adminisitrator(Long id, String password) {
+    public Administrator(Long id, String password) {
         this.id = id;
         this.password = password;
     }
 
-    public Adminisitrator(String password) {
+    public Administrator(String password) {
         this.password = password;
     }
 
@@ -37,5 +39,13 @@ public class Adminisitrator {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

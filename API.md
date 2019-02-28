@@ -44,7 +44,7 @@
           "college":"dxxy",
           "id":20150201007,
           "password":"123456",
-          "userName":"zhh"
+          "username":"zhh"
       },
       "message":"query successful"
   }

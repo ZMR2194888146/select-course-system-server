@@ -62,4 +62,18 @@ public class CourseService {
         if (course != null) return FormatString.infoToJson("200", "query success", course);
         return FormatString.infoToJson("200", "query failed");
     }
+
+    /**
+     * 通过教师id查询其创建的所有课程
+     * @param tid   教师id
+     * @return  JSON
+     */
+    public String getCourseByTid(Long tid){
+        JSONArray array = new JSONArray();
+        List<Course> courses = courseRepository.findCoursesByTid(tid);
+        for (Course c: courses ) {
+            array.add(JSONObject.parseObject(JSON.toJSONString(c)));
+        }
+        return FormatString.infoToJson("200", "query success", array);
+    }
 }

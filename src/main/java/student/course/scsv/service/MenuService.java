@@ -1,5 +1,6 @@
 package student.course.scsv.service;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import student.course.scsv.util.FormatString;
@@ -16,16 +17,16 @@ public class MenuService {
     @Value("${menu.admin}")
     private String adminMenuList;
 
-    private String getStudentMenuList() {
-        return studentMenuList.substring(1, studentMenuList.length() - 1);
+    private JSONObject getStudentMenuList() {
+        return JSONObject.parseObject(studentMenuList.substring(1, studentMenuList.length() - 1));
     }
 
-    private String getTeacherMenuList() {
-        return teacherMenuList.substring(1, teacherMenuList.length()-1);
+    private JSONObject getTeacherMenuList() {
+        return JSONObject.parseObject(teacherMenuList.substring(1, teacherMenuList.length()-1));
     }
 
-    private String getAdministratorMenuList(){
-        return adminMenuList.substring(1, adminMenuList.length() - 1);
+    private JSONObject getAdministratorMenuList(){
+        return JSONObject.parseObject(adminMenuList.substring(1, adminMenuList.length() - 1));
     }
 
     public String getMenuList(String userType){

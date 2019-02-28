@@ -37,4 +37,12 @@ public class SelectedCourse {
     public void setCid(Long cid) {
         this.cid = cid;
     }
+
+    @Override
+    public String toString() {
+        return "SelectedCourse{" +
+                "sid=" + sid +
+                ", cid=" + cid +
+                '}';
+    }
 }
