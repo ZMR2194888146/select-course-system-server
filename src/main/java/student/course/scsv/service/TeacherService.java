@@ -66,7 +66,11 @@ public class TeacherService {
      public String getTeacherInfoById(Long id){
         if (existTeacherById(id)){
             Teacher t = teacherRepository.findTeacherById(id);
-            return FormatString.infoToJson("200","query successful", t);
+            JSONObject json = menuService.getMenuList("teacher");
+            JSONObject teacher = JSONObject.parseObject(JSON.toJSONString(t));
+            teacher.remove("password");
+            json.put("userinfo", teacher);
+            return FormatString.infoToJson("200","query successful", json);
         }
         return FormatString.infoToJson("200","query failed");
     }

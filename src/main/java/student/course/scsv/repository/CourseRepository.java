@@ -6,7 +6,7 @@ import student.course.scsv.entity.Course;
 import java.util.List;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
-    void removeCourseById(Long id);
+    void deleteByCid(Long cid);
     List<Course> findCoursesByTid(Long tid);
-    Course findCourseById(Long id);
+    Course findCourseByCid(Long id);
 }

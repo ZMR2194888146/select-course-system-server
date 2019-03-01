@@ -1,5 +1,6 @@
 package student.course.scsv.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import student.course.scsv.entity.Course;
@@ -31,22 +32,24 @@ public class APIController {
     private MenuService menuService;
 
     @Autowired
-    private CourseService courseService;
+    private   CourseService courseService;
 
     @Autowired
     private SelectCourseService selectCourseService;
 
+    @Autowired
+    private AdminService adminService;
+
     /**********************  用户相关接口  ***********************/
     /**
      * 用户登录接口
-     * @param username        用户id
-     * @param password  用户密码
-     * @param usertype  用户类型
-     * @return  JSON
+     * @param jsonObject 包含用户信息的json对象
+     * @return JSONObject
      */
     @PostMapping(path = "/login")
-    public String login(String username, String password, String usertype){
-       return loginService.checkLogin(username, password,usertype);
+    public String login(@RequestBody JSONObject jsonObject){
+        String re = loginService.checkLogin(jsonObject.get("username").toString(), jsonObject.get("password").toString(), jsonObject.get("usertype").toString());
+        return re;
     }
 
     /**
@@ -100,15 +103,6 @@ public class APIController {
         return teacherService.updatePassword(id, password);
     }
 
-    /**
-     * 根据用户类型获取菜单列表
-     * @param userType 用户类型（teacher | student | admin）
-     * @return JSON
-     */
-    @GetMapping( path = "/menu/{userType}")
-    public String getTeacherMenuList(@PathVariable("userType") String userType){
-        return menuService.getMenuList(userType);
-    }
 
     /**********************  课程相关接口  ***********************/
     /**
@@ -125,9 +119,14 @@ public class APIController {
      * @param id 教师id
      * @return JSON
      */
-    @GetMapping(path = "/course/{id}")
+    @GetMapping(path = "/course/teacher/{id}")
     public String getCourseByTid(@PathVariable("id") Long id){
         return courseService.getCourseByTid(id);
+    }
+
+    @GetMapping(path = "/course/{id}")
+    public String getCourseInfo(@PathVariable("id") Long id){
+        return courseService.getCourseById(id);
     }
 
     /**
@@ -193,8 +192,15 @@ public class APIController {
         return teacherService.addTeacher(new Teacher(name, college, username, "88888888"));
     }
 
+
+
     @PostMapping(path = "/admin/student")
     public String addStudentUser(String username, String className, String name, String college, String major){
         return studentService.saveStudent(new Student(username, "88888888", className, name, college, major));
+    }
+
+    @GetMapping(path = "/admin/{id}")
+    public String getAdminInfo(@PathVariable("id") Long id){
+        return adminService.getAdminUserInfo(id);
     }
 }

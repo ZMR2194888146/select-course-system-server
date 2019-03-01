@@ -38,7 +38,7 @@ public class SelectCourseService {
         List<SelectedCourse> list = selectCourseRepository.findBySid(id);
         JSONArray jsonArray = new JSONArray();
         for (SelectedCourse sc: list) {
-            Course course = courseRepository.findCourseById(sc.getCid());
+            Course course = courseRepository.findCourseByCid(sc.getCid());
             Teacher teacher = teacherRepository.findTeacherById(course.getTid());
             JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(course));
             System.out.println(jsonObject);

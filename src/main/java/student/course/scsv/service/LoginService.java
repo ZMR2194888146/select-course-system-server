@@ -1,5 +1,6 @@
 package student.course.scsv.service;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import student.course.scsv.entity.Administrator;
@@ -29,17 +30,19 @@ public class LoginService {
     private AdministratorRepository administatorRepository;
 
     public String checkLogin(String userName,String password, String userType){
-        Map<String, Boolean> message = new HashMap<>();
-        if (doCheckLogin(userName, password, userType)){
-            message.put("succ", true);
-            return FormatString.infoToJson("200", "login success", message);
+        Map<String, Object> data = new HashMap<>();
+        Object userinfo;
+        if ((userinfo = doCheckLogin(userName, password, userType)) != null){
+            data.put("succ", true);
+            data.put("userinfo", userinfo);
+            return FormatString.infoToJson("200", "login success", data);
         }
-        message.put("succ", false);
-        return FormatString.infoToJson("200", "account or password error", message);
+        data.put("succ", false);
+        return FormatString.infoToJson("200", "account or password error", data);
     }
 
     //根据用户的类型调用不同的Repository接口
-    private boolean doCheckLogin(String userName,String password, String userType){
+    private JSONObject doCheckLogin(String userName,String password, String userType){
         if ("teacher".equals(userType)){
             return teacherLogin(userName, password);
         }else if ("student".equals(userType)){
@@ -49,27 +52,42 @@ public class LoginService {
         }
     }
 
-    private boolean teacherLogin(String userName, String password){
+    private JSONObject teacherLogin(String userName, String password){
         Teacher t;
         if ((t = teacherRepository.findTeacherByUsername(userName)) != null){
-            return password.equals(t.getPassword());
+            if (password.equals(t.getPassword())){
+                JSONObject teacher = new JSONObject();
+                teacher.put("id", t.getId());
+                teacher.put("usertype", "teacher");
+                return teacher;
+            }
         }
-        return false;
+        return null;
     }
 
-    private boolean studentLogin(String userName, String password){
+    private JSONObject studentLogin(String userName, String password){
         Student s;
         if ((s = studentRepository.findStudentByUsername(userName)) != null){
-            return password.equals(s.getPassword());
+            if (password.equals(s.getPassword())){
+                JSONObject json = new JSONObject();
+                json.put("id", s.getId());
+                json.put("usertype", "student");
+                return json;
+            }
         }
-        return false;
+        return null;
     }
 
-    private boolean administratorLogin(String userName, String password){
-        Administrator s;
-        if ((s = administatorRepository.findAdministratorByUsername(userName)) != null){
-            return password.equals(s.getPassword());
+    private JSONObject administratorLogin(String userName, String password){
+        Administrator a;
+        if ((a = administatorRepository.findAdministratorByUsername(userName)) != null){
+            if (password.equals(a.getPassword())){
+                JSONObject json = new JSONObject();
+                json.put("id", a.getId());
+                json.put("usertype", "admin");
+                return json;
+            }
         }
-        return false;
+        return null;
     }
 }

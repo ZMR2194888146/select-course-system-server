@@ -6,7 +6,9 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import student.course.scsv.entity.Course;
+import student.course.scsv.entity.Teacher;
 import student.course.scsv.repository.CourseRepository;
+import student.course.scsv.repository.TeacherRepository;
 import student.course.scsv.util.FormatString;
 
 import java.util.List;
@@ -16,6 +18,9 @@ public class CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private TeacherRepository teacherRepository;
 
     /**
      * 保存一门课程
@@ -35,7 +40,7 @@ public class CourseService {
      * @return JSON
      */
     public String delCourse(Long cid){
-        courseRepository.removeCourseById(cid);
+        courseRepository.deleteByCid(cid);
         return FormatString.infoToJson("200", "update success");
     }
 
@@ -47,7 +52,11 @@ public class CourseService {
         List<Course> list = courseRepository.findAll();
         JSONArray ja = new JSONArray();
         for (Course course : list){
-            ja.add(JSONObject.parseObject(JSON.toJSONString(course)));
+            JSONObject json = JSONObject.parseObject(JSON.toJSONString(course));
+            Teacher t = teacherRepository.findTeacherById(course.getTid());
+            json.remove("tid");
+            json.put("teacher", t.getName());
+            ja.add(json);
         }
         return FormatString.infoToJson("200", "query success", ja);
     }
@@ -58,7 +67,7 @@ public class CourseService {
      * @return  JSON
      */
     public String getCourseById(Long id){
-        Course course = courseRepository.findCourseById(id);
+        Course course = courseRepository.findCourseByCid(id);
         if (course != null) return FormatString.infoToJson("200", "query success", course);
         return FormatString.infoToJson("200", "query failed");
     }

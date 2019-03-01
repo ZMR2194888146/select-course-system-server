@@ -27,7 +27,9 @@ public class StudentService {
     public String getStudentInfo(Long id){
         if (existStudent(id)){
             Student s = studentRepository.findStudentById(id);
-            return FormatString.infoToJson("200", "query successful", s);
+            JSONObject json = menuService.getMenuList("student");
+            json.put("userinfo", JSONObject.parseObject(JSON.toJSONString(s)));
+            return FormatString.infoToJson("200", "query successful", json);
         }
         return FormatString.infoToJson("200", "query failed");
     }

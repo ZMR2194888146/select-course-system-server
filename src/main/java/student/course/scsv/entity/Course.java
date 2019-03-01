@@ -13,8 +13,8 @@ public class Course {
     @Id
     @Column(length = 10 )
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JSONField(name = "id")
-    private Long id;
+    @JSONField(name = "cid")
+    private Long cid;
 
     @JSONField(name = "tid")
     private Long tid;
@@ -69,12 +69,12 @@ public class Course {
         this.tid = tid;
     }
 
-    public Long getId() {
-        return id;
+    public Long getCid() {
+        return cid;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCid(Long cid) {
+        this.cid = cid;
     }
 
     public String getName() {
@@ -136,7 +136,7 @@ public class Course {
     @Override
     public String toString() {
         return "Course{" +
-                "id=" + id +
+                "cid=" + cid +
                 ", tid=" + tid +
                 ", name='" + name + '\'' +
                 ", capacity=" + capacity +
