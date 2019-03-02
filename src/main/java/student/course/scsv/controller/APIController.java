@@ -148,8 +148,13 @@ public class APIController {
         return courseService.saveCourse(new Course(tid, name, capacity, time, data, space, duce, score));
     }
 
-    @DeleteMapping( path = "/course")
-    public String delCourse(Long cid){
+    /**
+     * 通过指定的课程id删除一门课程
+     * @param cid   课程id
+     * @return  JOSN
+     */
+    @DeleteMapping( path = "/course/{id}")
+    public String delCourse(@PathVariable("id") Long cid){
         return courseService.delCourse(cid);
     }
 
@@ -192,8 +197,6 @@ public class APIController {
         return teacherService.addTeacher(new Teacher(name, college, username, "88888888"));
     }
 
-
-
     @PostMapping(path = "/admin/student")
     public String addStudentUser(String username, String className, String name, String college, String major){
         return studentService.saveStudent(new Student(username, "88888888", className, name, college, major));
@@ -202,5 +205,26 @@ public class APIController {
     @GetMapping(path = "/admin/{id}")
     public String getAdminInfo(@PathVariable("id") Long id){
         return adminService.getAdminUserInfo(id);
+    }
+
+    /**
+     * 根据指定的学生ID删除一个学生
+     * @param id 学生ID，不是学号
+     * @return  JSON
+     */
+    @DeleteMapping(path = "/admin/student/{id}")
+    public String deletStudent(@PathVariable("id") Long id){
+        return studentService.deleteStudent(id);
+    }
+
+    /**
+     * 根据指定的id删除一位教师
+     * @param id    教师id，不是职工号
+     * @return  JSON
+     */
+    @DeleteMapping(path = "/admin/teacher/{id}")
+    public String deleteTeacher(@PathVariable("id") Long id){
+        System.out.println("id ================================================> " + id);
+        return teacherService.deleteTeacher(id);
     }
 }

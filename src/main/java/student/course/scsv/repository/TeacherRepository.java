@@ -12,4 +12,5 @@ public interface TeacherRepository  extends JpaRepository<Teacher, Long> {
     Teacher findTeacherByUsername(String username);
     boolean existsTeacherById(Long id);
     boolean existsTeacherByUsername(String userName);
+    void deleteTeacherById(Long id);
 }

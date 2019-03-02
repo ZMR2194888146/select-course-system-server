@@ -10,5 +10,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Student findStudentByUsername(String userName);
     //通过学生判断学号是否存在
     boolean existsStudentById(Long id);
-
+    //通过学生ID删除学生
+    void deleteStudentById(Long id);
 }

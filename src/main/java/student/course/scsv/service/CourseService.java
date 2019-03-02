@@ -11,9 +11,11 @@ import student.course.scsv.repository.CourseRepository;
 import student.course.scsv.repository.TeacherRepository;
 import student.course.scsv.util.FormatString;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class CourseService {
 
     @Autowired
@@ -40,8 +42,11 @@ public class CourseService {
      * @return JSON
      */
     public String delCourse(Long cid){
-        courseRepository.deleteByCid(cid);
-        return FormatString.infoToJson("200", "update success");
+        if (courseRepository.exists(cid)){
+            courseRepository.deleteByCid(cid);
+            return FormatString.infoToJson("200", "update success");
+        }
+        return FormatString.infoToJson("400", "this course was not found");
     }
 
     /**

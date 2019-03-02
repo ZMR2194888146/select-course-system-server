@@ -24,7 +24,8 @@ public class AdminService {
             a = administratorRepository.findAdministratorById(id);
             JSONObject admin = JSONObject.parseObject(JSON.toJSONString(a));
             admin.remove("password");
-            return FormatString.infoToJson("200","query successfule", admin);
+            json.put("userinfo", admin);
+            return FormatString.infoToJson("200","query successful", json);
         }
         return FormatString.infoToJson("200", "query failed");
     }

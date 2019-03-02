@@ -9,9 +9,11 @@ import student.course.scsv.entity.Student;
 import student.course.scsv.repository.StudentRepository;
 import student.course.scsv.util.FormatString;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class StudentService {
 
     @Autowired
@@ -42,7 +44,9 @@ public class StudentService {
         List<Student> students = studentRepository.findAll();
         JSONArray array = new JSONArray();
         for (Student student: students) {
-            array.add(JSONObject.parseObject(JSON.toJSONString(student)));
+            JSONObject json = JSONObject.parseObject(JSON.toJSONString(student));
+            json.remove("password");
+            array.add(json);
         }
         return array;
     }
@@ -72,6 +76,14 @@ public class StudentService {
             return FormatString.infoToJson("200", "update success");
         }
         return FormatString.infoToJson("400", "update failed");
+    }
+
+    public String deleteStudent(Long id){
+        if (studentRepository.existsStudentById(id)){
+            studentRepository.deleteStudentById(id);
+            return FormatString.infoToJson("200", "update success");
+        }
+        return FormatString.infoToJson("400", "the man was not found! " );
     }
 
 }

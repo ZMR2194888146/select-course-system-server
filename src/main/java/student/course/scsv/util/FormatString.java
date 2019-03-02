@@ -75,4 +75,11 @@ public class FormatString {
         return jsonObject;
     }
 
+     static String getString(JSONObject json, String s, User a) {
+        JSONObject admin = JSONObject.parseObject(s);
+        admin.remove("password");
+        json.put("userinfo", admin);
+        return FormatString.infoToJson("200","query successful", json);
+    }
+
 }

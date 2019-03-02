@@ -1,6 +1,5 @@
 package student.course.scsv.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class MenuService {
     }
 
     private JSONObject getAdministratorMenuList(){
-        return JSONArray.parseObject(adminMenuList.substring(1, adminMenuList.length() - 1));
+        return JSONObject.parseObject(adminMenuList.substring(1, adminMenuList.length() - 1));
     }
 
     public JSONObject getMenuList(String userType){
