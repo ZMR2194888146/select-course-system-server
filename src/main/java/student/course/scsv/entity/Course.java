@@ -29,11 +29,15 @@ public class Course {
 
     //上课时间
     @JSONField(name = "time")
-    private String time;
+    private Integer time;
+
+    //课程时长
+    @JSONField(name = "acount")
+    private Integer account;
 
     //周几上课
     @JSONField(name = "date")
-    private String date;
+    private Integer date;
 
     //上课地点
     @JSONField(name = "space")
@@ -41,7 +45,7 @@ public class Course {
 
     //周学时
     @JSONField(name = "duce")
-    private String duce;
+    private int duce;
 
     //课程学分
     @JSONField(name = "score")
@@ -50,23 +54,16 @@ public class Course {
     public Course() {
     }
 
-    public Course(Long teacherID, String name, Integer capacity, String time, String date, String space, String duce, Double score) {
-        this.tid = teacherID;
+    public Course(Long tid, String name, Integer capacity, Integer time, Integer account, Integer date, String space, int duce, Double score) {
+        this.tid = tid;
         this.name = name;
         this.capacity = capacity;
         this.time = time;
+        this.account = account;
         this.date = date;
         this.space = space;
         this.duce = duce;
         this.score = score;
-    }
-
-    public Long getTid() {
-        return tid;
-    }
-
-    public void setTid(Long tid) {
-        this.tid = tid;
     }
 
     public Long getCid() {
@@ -75,6 +72,14 @@ public class Course {
 
     public void setCid(Long cid) {
         this.cid = cid;
+    }
+
+    public Long getTid() {
+        return tid;
+    }
+
+    public void setTid(Long tid) {
+        this.tid = tid;
     }
 
     public String getName() {
@@ -93,19 +98,27 @@ public class Course {
         this.capacity = capacity;
     }
 
-    public String getTime() {
+    public Integer getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Integer time) {
         this.time = time;
     }
 
-    public String getDate() {
+    public Integer getAccount() {
+        return account;
+    }
+
+    public void setAccount(Integer account) {
+        this.account = account;
+    }
+
+    public Integer getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Integer date) {
         this.date = date;
     }
 
@@ -117,11 +130,11 @@ public class Course {
         this.space = space;
     }
 
-    public String getDuce() {
+    public int getDuce() {
         return duce;
     }
 
-    public void setDuce(String duce) {
+    public void setDuce(int duce) {
         this.duce = duce;
     }
 

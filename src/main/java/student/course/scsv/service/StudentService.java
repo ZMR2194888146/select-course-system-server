@@ -52,32 +52,40 @@ public class StudentService {
     }
 
     /**
-     * 更新学生密码
-     * @param id        学生id
-     * @param password  新密码
-     * @return  JSON
+     * 修改学生密码
+     * @param id    需要修改的学生的id
+     * @param nPass 新的密码
+     * @param oPass 旧的密码
+     * @return  JOSN
      */
-    public String updatePassword(Long id, String password){
+    public String updatePassword(Long id, String nPass, String oPass){
         if (existStudent(id)){
             Student s = studentRepository.findStudentById(id);
-            s.setPassword(password);
-            studentRepository.save(s);
-            return FormatString.infoToJson("200","update successful");
+            if (oPass.equals(s.getPassword())){
+                s.setPassword(nPass);
+                studentRepository.save(s);
+                return FormatString.infoToJson("200","update successful");
+            }
         }
-        return FormatString.infoToJson("200","update failed");
+        return FormatString.infoToJson("400","enter info have error !");
     }
 
     /**
-     * 保存一个学生实例
+     * 添加一个学生实例
      * @param student   需要保存的学生实例
      */
-    public String saveStudent(Student student){
+    public String addStudent(Student student){
         if (studentRepository.save(student) != null){
             return FormatString.infoToJson("200", "update success");
         }
         return FormatString.infoToJson("400", "update failed");
     }
 
+    /**
+     * 根据学生id删除学生
+     * @param id    要删除的学生id
+     * @return  JSON
+     */
     public String deleteStudent(Long id){
         if (studentRepository.existsStudentById(id)){
             studentRepository.deleteStudentById(id);

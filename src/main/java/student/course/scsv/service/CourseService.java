@@ -59,7 +59,6 @@ public class CourseService {
         for (Course course : list){
             JSONObject json = JSONObject.parseObject(JSON.toJSONString(course));
             Teacher t = teacherRepository.findTeacherById(course.getTid());
-            json.remove("tid");
             json.put("teacher", t.getName());
             ja.add(json);
         }

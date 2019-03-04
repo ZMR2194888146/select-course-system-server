@@ -10,7 +10,7 @@
     </parent>
     <groupId>student.course</groupId>
     <artifactId>select-course-system-server</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <description>select-course-system-server</description>
 
     <properties>

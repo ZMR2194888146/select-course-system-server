@@ -1,14 +1,21 @@
 package student.course.scsv.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Administrator {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JSONField(name = "id")
     private Long id;
 
+    @JSONField(name = "username")
     private String username;
 
     private String password;
@@ -16,20 +23,8 @@ public class Administrator {
     public Administrator() {
     }
 
-    public Administrator(Long id, String password) {
-        this.id = id;
-        this.password = password;
-    }
-
-    public Administrator(String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
+    public Administrator(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
@@ -47,5 +42,13 @@ public class Administrator {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

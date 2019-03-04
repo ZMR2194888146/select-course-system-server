@@ -3,10 +3,7 @@ package student.course.scsv.controller;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import student.course.scsv.entity.Course;
-import student.course.scsv.entity.SelectedCourse;
-import student.course.scsv.entity.Student;
-import student.course.scsv.entity.Teacher;
+import student.course.scsv.entity.*;
 import student.course.scsv.service.*;
 
 /**
@@ -29,9 +26,6 @@ public class APIController {
     private StudentService studentService;
 
     @Autowired
-    private MenuService menuService;
-
-    @Autowired
     private   CourseService courseService;
 
     @Autowired
@@ -48,8 +42,7 @@ public class APIController {
      */
     @PostMapping(path = "/login")
     public String login(@RequestBody JSONObject jsonObject){
-        String re = loginService.checkLogin(jsonObject.get("username").toString(), jsonObject.get("password").toString(), jsonObject.get("usertype").toString());
-        return re;
+        return loginService.checkLogin(jsonObject.get("username").toString(), jsonObject.get("password").toString(), jsonObject.get("usertype").toString());
     }
 
     /**
@@ -82,25 +75,15 @@ public class APIController {
     }
 
     /**
-     * 更学生用户密码
+     * 更新学生用户密码
      * @param id        用户id
-     * @param password  用户的新密码，密码的核对在客户端完成
      *  @return  JSON
      */
-    @PutMapping( value = "/student/{id}")
-    public String updateStudentPassword(@PathVariable("id") Long id, String password){
-        return studentService.updatePassword(id, password);
-    }
-
-    /**
-     * 更新教师用户密码
-     * @param id        用户id
-     * @param password  用户的新密码，密码的核对在客户端完成
-     *  @return  JSON
-     */
-    @PutMapping( value = "/teacher/{id}")
-    public String updateTeacherPassword(@PathVariable("id") Long id, String password){
-        return teacherService.updatePassword(id, password);
+    @PutMapping( value = "/{usertype}/{id}")
+    public String updateUserPassword(@PathVariable("id") Long id,@PathVariable("usertype") String userType, @RequestBody JSONObject json){
+        String oPass = json.getString("oPass");
+        String nPass = json.getString("nPass");
+        return userService.updatePassword(userType, id, nPass, oPass);
     }
 
 
@@ -131,21 +114,22 @@ public class APIController {
 
     /**
      * 添加一门课程
-     * @param name      课程名称
-     * @param tid       教师编号
-     * @param capacity  课程容量
-     * @param time      上课时间（一天中的具体时间）
-     * @param data      上课日期（一周中的一天，使用阿拉伯数字）
-     * @param space     上课地点（教室编号或场地）
-     * @param duce      周学时（上几周）
-     * @param score     学分
-     * @return JSON
+     * @param json
+     * @return
      */
     @PostMapping( path = "/course")
-    public String addCourse(String name, Long tid, Integer capacity,
-                            String time, String data, String space, String duce,
-                            Double score){
-        return courseService.saveCourse(new Course(tid, name, capacity, time, data, space, duce, score));
+    public String addCourse(@RequestBody JSONObject json){
+        Long tid = Long.parseLong(json.getString("tid"));
+        String name = json.getString("name");
+        int capacity = Integer.parseInt(json.getString("capacity"));
+        int account = Integer.parseInt(json.getString("account"));
+        int time = Integer.parseInt(json.getString("time"));
+        double score = Double.parseDouble(json.getString("score"));
+        int date = Integer.parseInt(json.getString("date"));
+        int duce = Integer.parseInt(json.getString("duce"));
+        String space = json.getString("space");
+        return courseService.saveCourse(
+                new Course(tid, name, capacity, time, account, date, space, duce, score));
     }
 
     /**
@@ -162,13 +146,14 @@ public class APIController {
      //                      选课相关接口
      **************************************************/
     /**
-     * 添加一个学生选的一门课
-     * @param sid   学生学号
-     * @param cid   学生选的课程号
+     * 添加一门选课
+     * @param json 包含选课的学生id和课程id
      * @return  JSON
      */
     @PostMapping(path = "/sc")
-    public String addSelectCourse(String sid, String cid){
+    public String addSelectCourse(@RequestBody JSONObject json){
+        String sid = json.getString("sid");
+        String cid = json.getString("cid");
         return selectCourseService.saveSelectCourse(new SelectedCourse(Long.parseLong(sid), Long.parseLong(cid)));
     }
 
@@ -186,20 +171,43 @@ public class APIController {
      //                   管理员相关接口
      *******************************************************/
     /**
-     * 添加一个教师用户，默认密码为8个8
-     * @param name      用户真实姓名
-     * @param college   用户所属学院
-     * @param username  用户登录名
+     * 添加一个教师用户
+     * @param json  包含教师信息的JSON实体
      * @return  JSON
      */
     @PostMapping(path = "/admin/teacher")
-    public String addTeacherUser(String name, String college,String username){
+    public String addTeacherUser(@RequestBody JSONObject json){
+        String name = json.getString("name");
+        String college = json.getString("college");
+        String username = json.getString("username");
         return teacherService.addTeacher(new Teacher(name, college, username, "88888888"));
     }
 
+    /**
+     * 添加一名学生
+     * @param json 包含学生信息的json请求体
+     * @return  JOSN
+     */
     @PostMapping(path = "/admin/student")
-    public String addStudentUser(String username, String className, String name, String college, String major){
-        return studentService.saveStudent(new Student(username, "88888888", className, name, college, major));
+    public String addStudentUser(@RequestBody JSONObject json){
+        String username = json.getString("" +
+                "username");
+        String className = json.getString("className");
+        String name = json.getString("name");
+        String college = json.getString("college");
+        String major = json.getString("major");
+        Student s = new Student(username, "88888888", className, name, college, major);
+        return studentService.addStudent(s);
+    }
+
+    /**
+     * 添加一位管理员
+     * @param json  包含管理员数据的JSON对象
+     * @return  JSON
+     */
+    @PostMapping(path = "/admin")
+    public String addAdministrator(@RequestBody JSONObject json){
+        return adminService.addAdministrator(new Administrator(json.getString("username"),  "88888888"));
     }
 
     @GetMapping(path = "/admin/{id}")
@@ -224,7 +232,6 @@ public class APIController {
      */
     @DeleteMapping(path = "/admin/teacher/{id}")
     public String deleteTeacher(@PathVariable("id") Long id){
-        System.out.println("id ================================================> " + id);
         return teacherService.deleteTeacher(id);
     }
 }

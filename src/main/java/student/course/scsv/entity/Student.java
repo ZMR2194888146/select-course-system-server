@@ -108,4 +108,17 @@ public class Student extends User{
     public void setMajor(String major) {
         this.major = major;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", className='" + className + '\'' +
+                ", name='" + name + '\'' +
+                ", college='" + college + '\'' +
+                ", major='" + major + '\'' +
+                '}';
+    }
 }

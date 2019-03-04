@@ -49,17 +49,20 @@ public class TeacherService {
     /**
      * 更新教师密码
      * @param id        需要更新密码的教师的id
-     * @param password  新的密码
+     * @param nPass     新的密码
+     * @param oPass     旧密码
      * @return JSON
      */
-     public String updatePassword(Long id, String password) {
-        if (existTeacherById(id)){
-            Teacher t = teacherRepository.findTeacherById(id);
-            t.setPassword(password);
-            teacherRepository.save(t);
-            return FormatString.infoToJson("200","update successful");
-        }
-        return FormatString.infoToJson("200","update failed");
+     public String updatePassword(Long id, String nPass, String oPass) {
+         if (existTeacherById(id)){
+             Teacher t = teacherRepository.findTeacherById(id);
+             if (oPass.equals(t.getPassword())){
+                 t.setPassword(nPass);
+                 teacherRepository.save(t);
+                 return FormatString.infoToJson("200","update successful");
+             }
+         }
+         return FormatString.infoToJson("400","enter info have error !");
     }
 
     /**
