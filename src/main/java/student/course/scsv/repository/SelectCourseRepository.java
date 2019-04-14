@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface SelectCourseRepository extends JpaRepository<SelectedCourse, SelectCourseKey> {
     List<SelectedCourse> findBySid(Long sid);
+    SelectedCourse findByCidAndSid(Long cid, Long sid);
 }

@@ -28,6 +28,9 @@ public class SelectCourseService {
     private TeacherRepository teacherRepository;
 
     public String saveSelectCourse(SelectedCourse selectedCourse) {
+        if (selectCourseRepository.findByCidAndSid(selectedCourse.getCid(), selectedCourse.getSid()) != null){
+            return FormatString.infoToJson("400", "the course is selected!");
+        }
         Course course = courseRepository.findCourseByCid(selectedCourse.getCid());
         course.setCapacity(course.getCapacity() -1 );
         if (course.getCapacity() > 0){
