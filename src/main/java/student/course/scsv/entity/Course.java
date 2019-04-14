@@ -33,7 +33,7 @@ public class Course {
 
     //课程时长
     @JSONField(name = "acount")
-    private Integer account;
+    private Integer count;
 
     //周几上课
     @JSONField(name = "date")
@@ -54,12 +54,12 @@ public class Course {
     public Course() {
     }
 
-    public Course(Long tid, String name, Integer capacity, Integer time, Integer account, Integer date, String space, int duce, Double score) {
+    public Course(Long tid, String name, Integer capacity, Integer time, Integer count, Integer date, String space, int duce, Double score) {
         this.tid = tid;
         this.name = name;
         this.capacity = capacity;
         this.time = time;
-        this.account = account;
+        this.count = count;
         this.date = date;
         this.space = space;
         this.duce = duce;
@@ -106,12 +106,12 @@ public class Course {
         this.time = time;
     }
 
-    public Integer getAccount() {
-        return account;
+    public Integer getCount() {
+        return count;
     }
 
-    public void setAccount(Integer account) {
-        this.account = account;
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     public Integer getDate() {

@@ -167,6 +167,16 @@ public class APIController {
         return selectCourseService.queryStudentSelected(id);
     }
 
+    /**
+     * 查询学生的课表
+     * @param sid   需要查看课表的学生id
+     * @return  学生课表数据的JSON字符串
+     */
+    @GetMapping(path = "/schedule/{sid}")
+    public String showStudentSchedule(@PathVariable("sid")Long sid){
+        return studentService.getSchedule(sid);
+    }
+
     /*******************************************************
      //                   管理员相关接口
      *******************************************************/
