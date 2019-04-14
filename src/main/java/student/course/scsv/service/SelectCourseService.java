@@ -27,9 +27,14 @@ public class SelectCourseService {
     @Autowired
     private TeacherRepository teacherRepository;
 
-    public String saveSelectCourse(SelectedCourse selectedCourse){
-        if (selectCourseRepository.save(selectedCourse) != null){
-            return FormatString.infoToJson("200", "update success");
+    public String saveSelectCourse(SelectedCourse selectedCourse) {
+        Course course = courseRepository.findCourseByCid(selectedCourse.getCid());
+        course.setCapacity(course.getCapacity() -1 );
+        if (course.getCapacity() > 0){
+            if (selectCourseRepository.save(selectedCourse) != null) {
+                courseRepository.save(course);
+                return FormatString.infoToJson("200", "update success");
+            }
         }
         return FormatString.infoToJson("200", "update failed");
     }
@@ -37,7 +42,7 @@ public class SelectCourseService {
     public String queryStudentSelected(Long id) {
         List<SelectedCourse> list = selectCourseRepository.findBySid(id);
         JSONArray jsonArray = new JSONArray();
-        for (SelectedCourse sc: list) {
+        for (SelectedCourse sc : list) {
             Course course = courseRepository.findCourseByCid(sc.getCid());
             Teacher teacher = teacherRepository.findTeacherById(course.getTid());
             JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(course));
