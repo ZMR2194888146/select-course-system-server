@@ -130,6 +130,8 @@ public class StudentService {
                 info.put("count", course.getCount());
                 info.put("teacher", teacherRepository.findTeacherById(course.getTid()).getName());
                 info.put("room", course.getSpace());
+                info.put("duce", course.getDuce());
+                info.put("time", course.getTime());
                 array.add(info);
             }
             return FormatString.infoToJson("200", "query success", array);
